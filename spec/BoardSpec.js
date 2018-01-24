@@ -17,7 +17,8 @@ describe('Board', function() {
         expect(conflictDetected).to.be.equal(conflictExpected);
       });
     });
-  };
+    //console.log(board.rows());
+  };  
 
   describe('Empty board', function() {
     verifyConflictTypes([''], [
@@ -26,6 +27,7 @@ describe('Board', function() {
       [0, 0, 0, 0],
       [0, 0, 0, 0]
     ]);
+
   });
 
   describe('Board with row conflicts', function() {

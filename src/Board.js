@@ -84,6 +84,17 @@
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
+      var reducer = function(accumulator, currentValue){
+        return accumulator + currentValue;
+       };
+      //console.log(this.rows()[0].reduce(reducer));
+      var rows = this.rows();
+      for (var i=0; i<rows.length;i++){
+        var currentRow = (this.rows())[i]
+         if (currentRow.reduce(reducer,0) >1){
+          return true;
+         }
+      }
       return false; // fixme
     },
 
@@ -99,7 +110,19 @@
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      var rows = this.rows();
+      var singleColumn = [];
+      var allCols = [];
+      for (var i=0; i<rows.length; i++){
+        for (var j=0; j<rows.length; j++){
+          singleColumn.push(rows[j][i]);
+        }
+        allCols.push(singleColumn);
+        singleColumn = [];
+      }
+      var tempBoard = new Board(allCols)
+      return tempBoard.hasAnyRowConflicts();
+      //return false; // fixme
     },
 
 
