@@ -49,10 +49,59 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = 0;
+  var counter = 0;
+  var board = new Board({n: n});
+  var arrBoard = board.rows();
+  var howManyTimes = 0;
+  var removedPiece = false;
+  var recurse = function (board, arrBoard, counter) {
+    
+    if (board.hasAnyRooksConflicts() === false && counter === n) {
+      // if (arrResult.indexOf(JSON.stringify(board)) === -1) {
+      //   arrResult.push(JSON.stringify(board));
+      //   solutionCount++;
+      // }
+      solutionCount++;
+      removedPiece = false;
+      return;
+    }
 
-  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
-  return solutionCount;
+    for (var row = 0; row < arrBoard.length; row++) {
+      for (var col = 0; col < arrBoard.length; col++) {
+        if (arrBoard[row][col] === 0) {
+          board.togglePiece(row, col);
+          arrBoard[row][col] = 1;
+          counter++; 
+
+          if (board.hasAnyRooksConflicts() === true) {
+            board.togglePiece(row, col);
+            arrBoard[row][col] = 0;
+            counter--;
+            removedPiece = true;
+          } else if (board.hasAnyRooksConflicts() === false) {
+            recurse(board, arrBoard, counter);
+            removedPiece = false;
+          }
+          //remove piece
+          if (!removedPiece) {
+            board.togglePiece(row, col);
+            arrBoard[row][col] = 0;
+            counter--;
+            removedPiece = false;
+          }
+        }
+        
+      }
+    }
+
+  };
+
+  recurse(board, arrBoard, counter);
+  //console.log(JSON.stringify(arrResult));
+
+  console.log('Number of solutions for ' + n + ' rooks:', Math.sqrt(solutionCount));
+  return (Math.sqrt(solutionCount));
 };
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
