@@ -58,13 +58,13 @@ window.countNRooksSolutions = function(n) {
 
   var recurse = function (counter) {
 
-    for (var col = 0; col < arrBoard.length; col++) {
+    for (var col = 0; col < n; col++) {
       if (arrBoard[newRow][col] === 0) {
         board.togglePiece(newRow, col);
         arrBoard[newRow][col] = 1;
         counter++; 
   
-        if (board.hasAnyRooksConflicts() === true) {
+        if (board.hasColConflictAt(col) === true) {
           board.togglePiece(newRow, col);
           arrBoard[newRow][col] = 0;
           counter--;
@@ -192,7 +192,7 @@ window.countNQueensSolutions = function(n) {
         arrBoard[newRow][col] = 1;
         counter++; 
   
-        if (board.hasAnyQueensConflicts() === true) {
+        if ((board.hasColConflictAt(col) || board.hasAnyMajorDiagonalConflicts() || board.hasAnyMinorDiagonalConflicts() === true)) {
           board.togglePiece(newRow, col);
           arrBoard[newRow][col] = 0;
           counter--;
